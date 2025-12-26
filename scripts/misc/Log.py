@@ -16,8 +16,6 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(), logging.FileHandler(save_dir / "{}.log".format(time))],
 )
 
-for noisy_lib in ["urllib3", "selenium", "botocore", "undetected_chromedriver", "uc"]:
-    logging.getLogger(noisy_lib).setLevel(logging.WARNING)
 
 class MyLogger:
     def __init__(self, name):
@@ -38,4 +36,8 @@ class MyLogger:
 
 def is_debug():
     return MyLogger("").get_level() == logging.DEBUG
+
+def disable_noisy_libs_logs():
+    for noisy_lib in ["urllib3", "selenium", "botocore", "undetected_chromedriver", "uc"]:
+        logging.getLogger(noisy_lib).setLevel(logging.WARNING)
 

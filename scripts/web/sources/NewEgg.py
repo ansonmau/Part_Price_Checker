@@ -61,7 +61,7 @@ class NewEgg():
             logger.debug("Incorrect model")
 
         if price == -1:
-            logger.debug("Failed to find model '{}' in results".format(model))
+            logger.debug("Failed to find model '{}' in results".format(self.item_id))
 
         return price
         

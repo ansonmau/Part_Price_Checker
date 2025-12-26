@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QApplication
+from scripts.misc.Log import disable_noisy_libs_logs
 import scripts.qb.Parser as parser
 from scripts.misc.Utils import ROOT
 from scripts.ui.Main_Window import MainWindow
@@ -28,5 +29,6 @@ def main():
     app.exec()
 
 if __name__ == "__main__":
+    disable_noisy_libs_logs()
     manager_test()
 
