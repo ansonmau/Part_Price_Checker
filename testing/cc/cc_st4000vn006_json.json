@@ -1,0 +1,29 @@
+{
+    "send_to": "G-R0GYWSD9BK",
+    "items": {
+        "item_id": 234391,
+        "item_name": "IRONWOLF 4TB NAS 3.5IN 6GB/S SATA 64MB",
+        "quantity": 1,
+        "price": 139.99,
+        "currency": "CAD",
+        "index": 0,
+        "item_brand": "SEAGATE",
+        "item_category": "desktop-internal-hard-drives",
+        "item_list_id": "search",
+        "item_variant": ""
+    }
+}{
+    "send_to": "G-R0GYWSD9BK",
+    "items": {
+        "item_id": 245108,
+        "item_name": "IRONWOLF 4TB NAS 3.5IN 6GB/S SATA 64MB(Open Box)",
+        "quantity": 1,
+        "price": 125.99,
+        "currency": "CAD",
+        "index": 1,
+        "item_brand": "SEAGATE",
+        "item_category": "desktop-internal-hard-drives",
+        "item_list_id": "search",
+        "item_variant": ""
+    }
+}

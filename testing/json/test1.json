@@ -1,0 +1,261 @@
+{
+    "status": true,
+    "data": {
+        "version": 1762738103,
+        "items": [
+            {
+                "id": 363,
+                "name": "Newegg Feedback System",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/363/5191.49.js"
+                    }
+                ],
+                "gdpr": "C0003",
+                "priority": 999
+            },
+            {
+                "id": 804,
+                "name": "update customer service wedge ",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/804/4786.3.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 677,
+                "name": "ChatMessageBase",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/677/4965.30.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 654,
+                "name": "Collect GA4 page on legacy asp.net page",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/654/4612.9.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 647,
+                "name": "Price Range Input Focuss",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/647/3040.1.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 603,
+                "name": "Hide sellers link for CN and HK",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/603/2634.0.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 587,
+                "name": "rakuten marketing .ca",
+                "content": [
+                    {
+                        "type": "LIB",
+                        "file": "https://imk.neweggimages.com/amber/json/2022-06-20/n2022TagHelper.js"
+                    },
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/587/2625.1.js"
+                    }
+                ],
+                "gdpr": "C0002",
+                "priority": 100
+            },
+            {
+                "id": 577,
+                "name": "Owner IQ 348 for Newegg.ca",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/577/2357.0.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 533,
+                "name": "Add B2B banner on PDP - CAN",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/533/1746.1.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 495,
+                "name": "phone number on header",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/495/3775.23.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 440,
+                "name": "IMC Desktop",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/440/1721.6.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 411,
+                "name": "Security Info - Desktop",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/411/3234.1.js"
+                    }
+                ],
+                "gdpr": "C0003",
+                "priority": 100
+            },
+            {
+                "id": 321,
+                "name": "remove testimonials entry",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/321/6bb94988-f6b4-4df2-9425-1f7e8991f933_1.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 259,
+                "name": "cost per GB - productlist",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/259/3489.10.js"
+                    },
+                    {
+                        "type": "CSS",
+                        "file": "https://imk.neweggimages.com/amber/json/259/3490.10.css"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 197,
+                "name": "Rotate item images",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/197/4298.8.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 156,
+                "name": "header-proactive",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/156/3935.17.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 85,
+                "name": "Dynamic Campaign Universal",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/85/5178.57.js"
+                    },
+                    {
+                        "type": "CSS",
+                        "file": "https://imk.neweggimages.com/amber/json/85/5179.57.css"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 76,
+                "name": "Clean Useless Cookie",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/76/170e1e68-0add-4ec8-a18b-28b847d2bc0b_1.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 100
+            },
+            {
+                "id": 464,
+                "name": "FinancingPrice - intermediary page",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/464/5018.24.js"
+                    }
+                ],
+                "gdpr": "C0003",
+                "priority": 1
+            },
+            {
+                "id": 27,
+                "name": "fix promotion link on PLP",
+                "content": [
+                    {
+                        "type": "JS",
+                        "file": "https://imk.neweggimages.com/amber/json/27/4316.9.js"
+                    }
+                ],
+                "gdpr": "C0001",
+                "priority": 1
+            }
+        ]
+    },
+    "message": "success"
+}
