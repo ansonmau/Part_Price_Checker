@@ -7,17 +7,13 @@ from scripts.ui.Main_Window import MainWindow
 def manager_test():
     from scripts.web.Manager import Manager
     m = Manager()
-    m.scrape_price("ST10000VE001")
+    m.scrape_price("i9-14900KF")
 
-def newegg_test():
-    from scripts.web.sources.NewEgg import NewEgg
-    NE = NewEgg()
-    NE.scrape_price("WDS200T2R0A")
+def me_test():
+    from scripts.web.sources.MemoryExpress import MemoryExpress
+    ME = MemoryExpress()
+    ME.scrape_price("")
 
-def cc_test():
-    from scripts.web.sources.CanadaComputers import CanadaComputers
-    CC = CanadaComputers()
-    price = CC.scrape_price("Prime RTX-5080-O16G")
 
 def main():
     qb_file = ROOT / "data" / "qb.xlsx"
@@ -30,5 +26,4 @@ def main():
 
 if __name__ == "__main__":
     disable_noisy_libs_logs()
-    manager_test()
-
+    me_test()

@@ -20,6 +20,7 @@ logging.basicConfig(
 class MyLogger:
     def __init__(self, name):
         self.name = name
+        create_folder(ROOT / "logs" / self.name)
         self.logger = logging.getLogger(self.name)
     
     def get_level(self):
@@ -33,6 +34,12 @@ class MyLogger:
 
     def critical(self, msg):
         self.logger.critical(msg)
+
+    def to_file(self, txt, file_name = "out"):
+        path = ROOT / "logs" / self.name / "{}.log".format(file_name)
+        with open(path, 'w') as f:
+            f.write(txt)
+
 
 def is_debug():
     return MyLogger("").get_level() == logging.DEBUG

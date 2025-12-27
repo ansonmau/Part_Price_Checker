@@ -8,23 +8,29 @@ logger = MyLogger("Memory_Express")
 
 class MemoryExpress:
     class locators:
-        price_text_area = Locator('id', 'ProductPricing')
+        product_list = Locator('css', '[data-role="product-list-container"]')
+        direct_children = Locator('css', '> *')
 
     def __init__(self):
-        self.driver = WebDriverSession(True, True)
+        self.driver = WebDriverSession(undetected=True, headless=False)
 
     def scrape_price(self, item_id):
-        url = "https://www.memoryexpress.com/Products/{}".format(item_id)
+        self.item_id = item_id
+        url = "https://www.memoryexpress.com/Search/Products?Search=i9-14900KF".format(item_id)
         self.driver.get(url)
 
         price = -1
-        price_area = self.driver.find.by_loc(self.locators.price_text_area)
-        if price_area:
-            logger.debug("Price area found")
-            price_txt = self.driver.read.textFromElement(price_area)
-            price = self._extract_price(price_txt)
+        product_list = self.driver.find.by_loc(self.locators.product_list)
+        if product_list:
+            children = self.driver.find.all_from_parent(product_list, self.locators.direct_children)
+            if children:
+                logger.debug("Product list located. {} items found".format(len(children)))
+                i = 0
+                for elm in children:
+                    logger.to_file(self.driver.read.textFromElement(elm), file_name=f"item_{i}")
+                    i+=1
         else:
-            logger.debug("Price area not found (probably not a valid product)")
+            logger.debug("No products found for '{}'".format(item_id))
 
         return price
 

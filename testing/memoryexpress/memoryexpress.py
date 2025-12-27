@@ -22,5 +22,3 @@ class MemoryExpress:
 
         return price
     
-ME = MemoryExpress()
-ME.scrape_price("KF552C40BBK2-64")
