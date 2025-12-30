@@ -1,7 +1,8 @@
 from selenium import webdriver
-from scripts.misc.Log import MyLogger
+from scripts.misc.Log import MyLogger, is_debug
 from scripts.web.Driver import WebDriverSession
 from scripts.web.Locator import Locator
+
 import re
 
 logger = MyLogger("Memory_Express")
@@ -9,10 +10,15 @@ logger = MyLogger("Memory_Express")
 class MemoryExpress:
     class locators:
         product_list = Locator('css', '[data-role="product-list-container"]')
-        direct_children = Locator('css', '> *')
+        direct_children = Locator('xpath', './*')
 
     def __init__(self):
-        self.driver = WebDriverSession(undetected=True, headless=False)
+        # self.driver = WebDriverSession(undetected=True, headless=False)
+        self.driver = None
+        
+
+    def __del__(self):
+        self.driver.endself()
 
     def scrape_price(self, item_id):
         self.item_id = item_id
@@ -25,26 +31,30 @@ class MemoryExpress:
             children = self.driver.find.all_from_parent(product_list, self.locators.direct_children)
             if children:
                 logger.debug("Product list located. {} items found".format(len(children)))
-                i = 0
-                for elm in children:
-                    logger.to_file(self.driver.read.textFromElement(elm), file_name=f"item_{i}")
-                    i+=1
+                for i in range(len(children)):
+                    text = self.driver.read.textFromElement(children[i])
+                    self._extract_price(text)
+                    logger.to_file(text, file_name=f"item_{i}")
         else:
             logger.debug("No products found for '{}'".format(item_id))
 
         return price
 
-    def _extract_price(self, price_text) -> float:
-        search_pattern = r"Only\$(\d+(?:,\d{3})*\.\d{2})"
+    def _extract_price(self, product_text) -> float:
+        with open(logger.get_dir() / "item_0.log", 'r') as f:
+            product_text = f.read()
+        logger.debug(f"product text: {product_text}")
 
-        search = re.search(search_pattern, price_text)
+        search_pattern = r"\n\$(\d{1,3}(?:,\d{3})*)(?:\.\d{2})?"
+
+        search = re.search(search_pattern, product_text)
         if search:
             price = search.group(1)
             price = float(price.replace(',', ''))
             logger.debug("Successfully found price: {}".format(price))
         else:
             price = float(-1)
-            logger.debug("Failed to find price in text:\n\"{}\"".format(price_text))
+            logger.debug("Failed to find price in text:\"{}\"".format(repr(product_text)))
 
         return price
     

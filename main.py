@@ -12,9 +12,7 @@ def manager_test():
 def me_test():
     from scripts.web.sources.MemoryExpress import MemoryExpress
     ME = MemoryExpress()
-    ME.scrape_price("")
-
-
+    ME._extract_price("")
 def main():
     qb_file = ROOT / "data" / "qb.xlsx"
     parser.parse(qb_file)
