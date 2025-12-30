@@ -2,7 +2,7 @@ import threading
 from PySide6.QtCore import QObject, QThread, Signal, Slot
 from scripts.misc.Log import MyLogger
 
-logger = MyLogger(__name__)
+logger = MyLogger("Thread_Module")
 
 class Worker(QObject):
     started = Signal()

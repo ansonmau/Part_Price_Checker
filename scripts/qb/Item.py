@@ -1,7 +1,7 @@
 from scripts.misc.Log import MyLogger
 
 
-logger = MyLogger("Item_Object")
+logger = MyLogger("Item_Module")
 
 class Item:
     sources = ["cc", "az", "ne", "me"]
