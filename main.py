@@ -14,6 +14,12 @@ def me_test():
     ME = MemoryExpress()
     ME.scrape_price("i9-14900KF")
 
+def memory_test():
+    from scripts.web.Memory import Memory 
+    M = Memory('CC')
+    M.save_to_file()
+    
+
 def main():
     qb_file = ROOT / "data" / "qb.xlsx"
     parser.parse(qb_file)
@@ -25,4 +31,4 @@ def main():
 
 if __name__ == "__main__":
     disable_noisy_libs_logs()
-    me_test()
+    memory_test()
