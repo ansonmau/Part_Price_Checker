@@ -10,7 +10,6 @@ class Item:
         self.paid = -1
         self.id = ""
         self.qty = 0
-        self.open_box = False
         self.source = "NA"
 
     def set_source(self, source):
@@ -42,3 +41,19 @@ class Item:
 
     def set_open_box(self, val: bool):
         self.open_box = val
+
+    def get_source(self):
+        return self.source
+
+    def get_id(self):
+        return self.id
+
+    def get_qty(self):
+        return self.qty
+
+    def get_new_price(self):
+        return self.new_price 
+
+    def get_paid_price(self):
+        return self.paid
+
