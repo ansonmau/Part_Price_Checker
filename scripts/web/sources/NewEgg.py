@@ -3,15 +3,19 @@ import json
 import re
 from scripts.misc.Log import MyLogger, is_debug
 from scripts.misc.Utils import ROOT, create_folder
+from scripts.web.Memory import Memory
 
 logger = MyLogger("NewEgg")
 
 class NewEgg():
+    memory = Memory("NE")
+
     def __init__(self):
         self.item_id = ""
         self.response_text = ""
         self.debug_dir = ROOT / "logs" / "newegg"
         self.search_pattern = r'window\.__initialState__\s*=\s*(\{.*?\})</script>'
+        self.memory.load_from_file()
 
         if is_debug():
            create_folder(self.debug_dir) 

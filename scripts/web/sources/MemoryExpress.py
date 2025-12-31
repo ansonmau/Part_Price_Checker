@@ -2,18 +2,21 @@ from selenium import webdriver
 from scripts.misc.Log import MyLogger, is_debug
 from scripts.web.Driver import WebDriverSession
 from scripts.web.Locator import Locator
-
+from scripts.web.Memory import Memory
 import re
 
 logger = MyLogger("Memory_Express")
 
 class MemoryExpress:
+    memory = Memory("ME")
+
     class locators:
         product_list = Locator('css', '[data-role="product-list-container"]')
         direct_children = Locator('xpath', './*')
 
     def __init__(self):
         self.driver = WebDriverSession(undetected=True, headless=False)
+        self.memory.load_from_file()
         
 
     def __del__(self):

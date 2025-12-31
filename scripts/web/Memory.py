@@ -5,21 +5,31 @@ import json
 class Memory():
     memory_file = ROOT / "data" / "item_memory.json"
 
-    def __init__(self) -> None:
+    def __init__(self, source) -> None:
+        self.source = source
         self.memory = {}
-        self.last_key = None
 
-    def load_from_file(self):
-        with open(self.memory_file, 'r') as f:
-            self.memory = json.load(f)
-            self.last_key = list(self.memory.keys())[-1]
-        
-    def find(self, item_id):
+    def find(self, item_id: str) -> str | None:
         return self.memory.get(item_id)
 
+    def add(self, item_id: str, mem_id: str) -> None:
+        self.memory[item_id] = mem_id
+
+    def load_from_file(self) -> None:
+        with open(self.memory_file, 'r') as f:
+            self.memory = json.load(f)[self.source]
+        
     def save_to_file(self):
-        key_list = list(self.memory.keys())[-1]
-        last_index = key_list.find(self.last_key)
+        with open(self.memory_file, 'r') as f:
+            d = json.load(f)
+        d[self.source] = self.memory
+
+        with open(self.memory_file, 'w') as f:
+            json.dump(d, f)
+
+    def reset(self):
+        self.memory = {}
+        self.save_to_file()
 
         
 

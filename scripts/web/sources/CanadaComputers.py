@@ -1,5 +1,6 @@
 from scripts.misc.Log import MyLogger, is_debug
 from scripts.misc.Utils import ROOT, create_folder
+from scripts.web.Memory import Memory
 import requests
 import re
 import json
@@ -7,10 +8,13 @@ import json
 logger = MyLogger("Canada_Computers")
 
 class CanadaComputers:
+    memory = Memory("CC")
+
     def __init__(self):
         self.results = []
         self.results_search_pattern = r'gtag\("event",\s*"select_item",\s*(\{.*?\})\)'
         self.debug_dir = ROOT / "logs" / "cc"
+        self.memory.load_from_file()
 
         if is_debug():
             create_folder(self.debug_dir)
