@@ -15,6 +15,7 @@ def me_test():
     ME = MemoryExpress()
     price = ME.scrape_price("B850M EAGLE WF6E")
     price = ME.scrape_price("i9-14900KF")
+    price = ME.scrape_price("MAG CORELIQUID E360 WHITE")
     print(f'Price found: \'{price}\'')
 
 def memory_test():
