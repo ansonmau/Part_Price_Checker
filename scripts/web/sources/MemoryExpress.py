@@ -82,11 +82,12 @@ class MemoryExpress:
         return p_list
 
     def _extract_price_and_model(self, product_text) -> tuple:
-        model_pattern = ".*{}.*".format(self.item_id)
+        words = self.item_id.split(' ')
+        model_pattern = rf".*(\b(?:{'|'.join(words)})\b).*"
         price_pattern = r"\n\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)"
 
         price_search = re.search(price_pattern, product_text)
-        model_search = re.search(model_pattern, product_text)
+        model_search = re.search(model_pattern, product_text, re.IGNORECASE)
         if price_search:
             price = price_search.group(1)
             price = float(price.replace(',', ''))
