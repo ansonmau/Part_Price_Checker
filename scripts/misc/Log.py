@@ -25,7 +25,14 @@ class MyLogger:
         self.logger = logging.getLogger(self.name)
 
         create_folder(self.save_dir)
-    
+
+    @staticmethod
+    def set_root_level(level):
+        logging.basicConfig(level=level)
+
+    def set_level(self, level):
+        self.logger.setLevel(level)    
+
     def get_level(self):
         return self.logger.level 
 
@@ -39,6 +46,9 @@ class MyLogger:
         self.logger.critical(msg)
 
     def to_file(self, record, file_name="out"):
+        if self.get_level() == logging.INFO:
+            return
+
         if isinstance(record, str):
             path = self.save_dir / "{}.log".format(file_name)
             with open(path, 'w') as f:
@@ -53,10 +63,8 @@ class MyLogger:
                 with open(path, 'w') as f:
                     f.write(record[i])
 
-
     def get_dir(self):
         return self.save_dir
-
 
 def is_debug():
     return MyLogger("").get_level() == logging.DEBUG
