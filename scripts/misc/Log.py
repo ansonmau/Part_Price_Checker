@@ -68,7 +68,7 @@ class MyLogger:
 
         if not msg:
             msg = "OK"
-        print(msg)
+        print('\r')
 
         self.info(self.m1 + msg)
         self.in_prog = False
