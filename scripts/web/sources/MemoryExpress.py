@@ -45,10 +45,15 @@ class MemoryExpress:
             for p in product_text_list:
                 price, model = self._extract_price_and_model(p)
                 results[model] = price
+                logger.debug(f"Result processed:\nName: {model}\nPrice: {price}")
+            logger.info(f"{len(list(results.keys()))} items successfully processed")
             logger.to_file(results, 'results')
 
             if not self.m_item_id:
+                logger.debug("No memory found for item. Requesting from user.")
                 self.m_item_id = self.memory.query(self.item_id, results)
+            else:
+                logger.debug(f"Item found in memory: {self.m_item_id}")
 
             price = results.get(self.m_item_id, -2)
         else:
@@ -61,6 +66,7 @@ class MemoryExpress:
             else:
                 logger.debug("Price area not found (probably not a valid product)")
 
+        logger.debug(f"Price found for '{self.item_id}': {price}")
         return price
 
     def _get_product_list(self) -> list:
