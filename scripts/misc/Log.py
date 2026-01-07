@@ -1,6 +1,8 @@
 import logging
 from datetime import datetime
 import json
+import itertools
+import time
 
 from scripts.misc.Utils import ROOT, create_folder
 
@@ -23,6 +25,8 @@ class MyLogger:
         self.name = name
         self.save_dir = ROOT / "logs" / self.name
         self.logger = logging.getLogger(self.name)
+        self.in_prog = False
+        self.m1 = ''
 
         create_folder(self.save_dir)
 
@@ -34,7 +38,10 @@ class MyLogger:
         self.logger.setLevel(level)    
 
     def get_level(self):
-        return self.logger.level 
+        return self.logger.level
+    
+    def out(self, msg):
+        print(msg)
 
     def info(self, msg):
         self.logger.info(msg)
@@ -44,6 +51,27 @@ class MyLogger:
 
     def critical(self, msg):
         self.logger.critical(msg)
+
+    def begin_msg(self, msg):
+        if self.in_prog:
+            raise Exception("Message already in progress: '{}'".format(self.m1))
+
+        self.in_prog = True
+        msg = msg + "..."
+        self.m1 = msg 
+
+        print(msg, end = '')
+        
+    def end_msg(self, msg=None):
+        if not self.in_prog:
+            raise Exception("No messages currently in progress")
+
+        if not msg:
+            msg = "OK"
+        print(msg)
+
+        self.info(self.m1 + msg)
+        self.in_prog = False
 
     def to_file(self, record, file_name="out"):
         if self.get_level() == logging.INFO:

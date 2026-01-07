@@ -361,7 +361,7 @@ class read:
         return self._getElementAttribute(elm, attr_name)
 
     def url(self):
-        return self.driver.current_url
+        return self.sesh.driver.current_url
 
     def _getElementAttribute(self, element, attribute):
         assert element is not None
