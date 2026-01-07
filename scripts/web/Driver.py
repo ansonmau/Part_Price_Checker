@@ -360,6 +360,9 @@ class read:
     def attributeFromElement(self, elm, attr_name):
         return self._getElementAttribute(elm, attr_name)
 
+    def url(self):
+        return self.driver.current_url
+
     def _getElementAttribute(self, element, attribute):
         assert element is not None
         return element.get_attribute(attribute)

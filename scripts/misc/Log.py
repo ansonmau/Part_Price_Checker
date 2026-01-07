@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+import json
 
 from scripts.misc.Utils import ROOT, create_folder
 
@@ -37,10 +38,21 @@ class MyLogger:
     def critical(self, msg):
         self.logger.critical(msg)
 
-    def to_file(self, txt, file_name = "out"):
-        path = self.save_dir / "{}.log".format(file_name)
-        with open(path, 'w') as f:
-            f.write(txt)
+    def to_file(self, record, file_name="out"):
+        if isinstance(record, str):
+            path = self.save_dir / "{}.log".format(file_name)
+            with open(path, 'w') as f:
+                f.write(record)
+        elif isinstance(record, dict):
+            path = self.save_dir / "{}.json".format(file_name)
+            with open(path, 'w') as f:
+                json.dump(record, f, indent=4)
+        elif isinstance(record, list):
+            for i in range(len(record)):
+                path = self.save_dir / "{}-{}.log".format(file_name, i)
+                with open(path, 'w') as f:
+                    f.write(record[i])
+
 
     def get_dir(self):
         return self.save_dir
