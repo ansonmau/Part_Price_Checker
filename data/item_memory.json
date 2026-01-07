@@ -1,0 +1,10 @@
+{
+    "CC": {
+        "test": "test_model_name"
+    },
+    "AZ": {},
+    "NE": {},
+    "ME": {
+        "i9-14900KF": "Core\u2122 i9-14900KF Processor w/ 24 (8P+16E) Cores / 32 Threads, up to 6.0 GHz"
+    }
+}
