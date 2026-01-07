@@ -14,6 +14,7 @@ class MemoryExpress:
     class locators:
         product_list = Locator('css', '[data-role="product-list-container"]')
         direct_children = Locator('xpath', './*')
+        price_text_area = Locator('id', 'ProductPricing')
 
     def __init__(self):
         self.driver = WebDriverSession(undetected=True, headless=False)
@@ -51,7 +52,14 @@ class MemoryExpress:
 
             price = results.get(self.m_item_id, -2)
         else:
-            pass
+            price_area = self.driver.find.by_loc(self.locators.price_text_area)
+            if price_area:
+                logger.debug("Price area found")
+                price_txt = self.driver.read.textFromElement(price_area)
+                logger.to_file(price_txt, 'price_text')
+                price = self._extract_price(price_txt)
+            else:
+                logger.debug("Price area not found (probably not a valid product)")
 
         return price
 
@@ -85,6 +93,21 @@ class MemoryExpress:
             model = ""
 
         return price, model
+
+    def _extract_price(self, price_text) -> float:
+        search_pattern = r"Only\$(\d+(?:,\d{3})*\.\d{2})"
+
+        search = re.search(search_pattern, price_text)
+        if search:
+            price = search.group(1)
+            price = float(price.replace(',', ''))
+            logger.debug("Successfully found price: {}".format(price))
+        else:
+            price = float(-1)
+            logger.debug("Failed to find price in text:\n\"{}\"".format(price_text))
+
+        return price
+
 
 
     
