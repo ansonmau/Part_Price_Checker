@@ -4,54 +4,71 @@ import requests
 import re
 import json
 
+from scripts.web.Driver import WebDriverSession
+from scripts.web.Memory import Memory
+
 logger = MyLogger("Canada_Computers")
 
 class CanadaComputers:
-    def __init__(self):
-        self.results = []
-        self.results_search_pattern = r'gtag\("event",\s*"select_item",\s*(\{.*?\})\)'
-        self.debug_dir = ROOT / "logs" / "cc"
+    memory = Memory("CC")
 
-        if is_debug():
-            create_folder(self.debug_dir)
+    def __init__(self):
+        self._init_webdriver()
+        self.memory.load_from_file()
+        self.response_text = "" 
+        self.item_id = ""
+        self.m_item_id = ""
+        self.results = {} 
+        self.price = -1
+
+    def _init_webdriver(self):
+        undetected = True
+        headless = True
+        logger.begin_msg("Starting CC webdriver")
+        self.driver = WebDriverSession(undetected, headless)
+        logger.end_msg('OK')
 
     def scrape_price(self, item_id):
         self.item_id = item_id
+        self.m_item_id = self.memory.find(item_id)
+        self.results = {}
+        self.response_text = ""
+
+        logger.info(f"Scraping started for '{item_id}'")
+
         self.send_request()
         self.extract_results()
-        return self.extract_price()
+        self.extract_price()
+
+        return float(self.price)
 
     def send_request(self):
         url = "https://www.canadacomputers.com/en/search?s={}".format(self.item_id)
-        r = requests.get(url)
+        self.driver.get(url)
 
-        self.response_text = r.text
+        self.response_text = self.driver.read.html()
 
-        if is_debug():
-            with open(self.debug_dir / "response_{}.txt".format(self.item_id), 'w') as f:
-                f.write(self.response_text)
+        logger.info("Response text recieved")
+
+        logger.to_file(self.response_text, 'response')
 
 
     def extract_results(self):
-        extract = re.findall(self.results_search_pattern, self.response_text, re.DOTALL)
-        self.results = [json.loads(m) for m in extract]
-
-        if is_debug():
-            with open(self.debug_dir / "results_{}.json".format(self.item_id), 'w') as f:
-                for r in self.results:
-                    json.dump(r, f, indent=4)
+        search_pattern = r'gtag\("event",\s*"select_item",\s*(\{.*?\})\)'
+        extract = re.findall(search_pattern, self.response_text, re.DOTALL)
+        for m in extract:
+            j = json.loads(m) 
+            model = j["items"]["item_name"]
+            price = j["items"]["price"]
+            logger.to_file(j, 'result')
+            self.results[model] = price
 
     def extract_price(self):
-        if len(self.results) == 0:
-            price = -1
-        elif len(self.results) == 1:
-            price = self.results[0]["items"]["price"]
-        else:
-            # pick first that isn't open box
-            i = 0 
-            while "open box" in self.results[i]["items"]["item_name"]:
-                i+=1
-            price = self.results[i]["items"]["price"]
+        result_keys = list(self.results.keys())
+        if len(result_keys) == 0:
+            return
 
-        logger.debug("Parsed price for {}: {}".format(self.item_id, price))
-        return float(price)
+        if not self.m_item_id or self.m_item_id not in self.results:
+            self.m_item_id = self.memory.query(self.item_id, self.results)
+
+        self.price = self.results[self.m_item_id]
