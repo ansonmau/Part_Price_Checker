@@ -1,6 +1,9 @@
 {
     "CC": {
-        "test": "test_model_name"
+        "CMT32GX5M2X6000C36": "CORSAIR VENGEANCE RGB 32GB (2x16GB) DDR5 6000MHz CL36 UDIMM",
+        "B850M EAGLE WF6E": "GIGABYTE B850M EAGLE WF6E  AMD AM5 Motherboard",
+        "i9-14900KF": "Intel Core i9-14900KF Desktop Processor 24 cores (8P+16E) LGA1700",
+        "MAG CORELIQUID E360 WHITE": "MSI MAG Coreliquid E360 AIO White"
     },
     "AZ": {},
     "NE": {},
