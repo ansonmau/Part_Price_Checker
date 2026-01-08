@@ -20,6 +20,13 @@ class MemoryExpress:
         self.driver = WebDriverSession(undetected=True, headless=False)
         self.memory.load_from_file()
 
+    def _init_webdriver(self):
+        undetected = True
+        headless = False
+        logger.begin_msg("Starting ME webdriver")
+        self.driver = WebDriverSession(undetected, headless)
+        logger.end_msg('OK')
+
     def __del__(self):
         self.driver.endself()
 
@@ -49,13 +56,13 @@ class MemoryExpress:
             logger.info(f"{len(list(results.keys()))} items successfully processed")
             logger.to_file(results, 'results')
 
-            if not self.m_item_id:
+            if not self.m_item_id or self.m_item_id not in results:
                 logger.debug("No memory found for item. Requesting from user.")
                 self.m_item_id = self.memory.query(self.item_id, results)
             else:
                 logger.debug(f"Item found in memory: {self.m_item_id}")
 
-            price = results.get(self.m_item_id, -2)
+            price = results[self.m_item_id]
         else:
             price_area = self.driver.find.by_loc(self.locators.price_text_area)
             if price_area:
@@ -67,7 +74,7 @@ class MemoryExpress:
                 logger.debug("Price area not found (probably not a valid product)")
 
         logger.debug(f"Price found for '{self.item_id}': {price}")
-        return price
+        return float(price)
 
     def _get_product_list(self) -> list:
         p_list = []
