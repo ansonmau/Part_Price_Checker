@@ -10,6 +10,18 @@ def manager_test():
     m = Manager()
     m.scrape_price("i9-14900KF")
 
+def cc_test():
+    from scripts.web.sources.CanadaComputers import CanadaComputers
+    CC = CanadaComputers()
+    p = CC.scrape_price("CMT32GX5M2X6000C36")
+    print(f'Price found: {p}')
+    p = CC.scrape_price("B850M EAGLE WF6E")
+    print(f'Price found: {p}')
+    p = CC.scrape_price("i9-14900KF")
+    print(f'Price found: {p}')
+    p = CC.scrape_price("MAG CORELIQUID E360 WHITE")
+    print(f'Price found: {p}')
+
 def me_test():
     from scripts.web.sources.MemoryExpress import MemoryExpress
     ME = MemoryExpress()
@@ -39,4 +51,4 @@ def main():
 if __name__ == "__main__":
     Init.init()
     disable_noisy_libs_logs()
-    me_test()
+    cc_test()
