@@ -15,7 +15,8 @@ create_folder(save_dir)
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format="%(asctime)s %(name)s: [%(levelname)s] %(message)s",
+    # format="%(asctime)s %(name)s: [%(levelname)s] %(message)s",
+    format="%(name)s: [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(), logging.FileHandler(save_dir / "{}.log".format(time))],
 )
 
@@ -52,6 +53,9 @@ class MyLogger:
     def critical(self, msg):
         self.logger.critical(msg)
 
+    def show(self, msg):
+        print(msg, end='\r')
+
     def begin_msg(self, msg):
         if self.in_prog:
             raise Exception("Message already in progress: '{}'".format(self.m1))
@@ -60,7 +64,8 @@ class MyLogger:
         msg = msg + "..."
         self.m1 = msg 
 
-        print(msg, end = '')
+        self.show(self.m1)
+
         
     def end_msg(self, msg=None):
         if not self.in_prog:
@@ -68,9 +73,10 @@ class MyLogger:
 
         if not msg:
             msg = "OK"
-        print('\r')
 
-        self.info(self.m1 + msg)
+        f_msg = self.m1+msg
+        self.show(f_msg)
+        self.info(f_msg)
         self.in_prog = False
 
     def to_file(self, record, file_name="out"):
@@ -87,9 +93,9 @@ class MyLogger:
                 json.dump(record, f, indent=4)
         elif isinstance(record, list):
             for i in range(len(record)):
-                path = self.save_dir / "{}-{}.log".format(file_name, i)
+                path = self.save_dir / "{}_{}.log".format(file_name, i)
                 with open(path, 'w') as f:
-                    f.write(record[i])
+                    f.write(str(record[i]))
 
     def get_dir(self):
         return self.save_dir
