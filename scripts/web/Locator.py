@@ -8,12 +8,13 @@ ELEMENT_TYPES = {
 }
 class Locator:
     def __init__(self, locator_type: str, locator: str, label:str|None=None):
+        if not label:
+            label = "{}: '{}'".format(locator_type, locator)
+
         self.locator_type = ELEMENT_TYPES[locator_type]
         self.locator = locator 
         self.label = label
 
-        if not label:
-            self.label = "[{}]{}".format(locator_type, locator)
 
     def get(self):
         return (self.locator_type, self.locator)
@@ -23,5 +24,4 @@ class Locator:
     
     def __str__(self):
         return self.label
-
 
