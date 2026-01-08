@@ -37,7 +37,7 @@ class Memory():
         sel = int(input("::> "))
         self.add(item_id, selections[sel])
         self.save_to_file()
-        logger.info(f"Stored '{item_id}' as '{selections[sel]}'")
+        logger.info(f"Stored '{item_id}' -> '{selections[sel]}'")
 
         return selections[sel]
 
