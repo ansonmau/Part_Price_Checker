@@ -346,7 +346,6 @@ class read:
 
     def text(self, targetTuple):
         element = self.sesh.find.by_loc(targetTuple)
-
         return self._getElementText(element)
 
     def textFromElement(self, element):
@@ -362,6 +361,10 @@ class read:
 
     def url(self):
         return self.sesh.driver.current_url
+
+    def html(self):
+        self.sesh.waitFor.pageLoad()
+        return self.sesh.driver.page_source
 
     def _getElementAttribute(self, element, attribute):
         assert element is not None
