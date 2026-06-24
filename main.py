@@ -13,8 +13,8 @@ def manager_test():
 def me_test():
     from scripts.web.sources.MemoryExpress import MemoryExpress
     ME = MemoryExpress()
-    price = ME.scrape_price("CMT32GX5M2X6000C36")
-    # price = ME.scrape_price("B850M EAGLE WF6E")
+    # price = ME.scrape_price("CMT32GX5M2X6000C36")
+    price = ME.scrape_price("B850M EAGLE WF6E")
     # price = ME.scrape_price("i9-14900KF")
     # price = ME.scrape_price("MAG CORELIQUID E360 WHITE")
 
@@ -40,3 +40,4 @@ if __name__ == "__main__":
     Init.init()
     disable_noisy_libs_logs()
     me_test()
+

@@ -1,0 +1,184 @@
+from selenium                          import webdriver
+from selenium.common.exceptions        import SessionNotCreatedException
+from selenium.webdriver.chrome.options import Options
+
+from scripts.misc.Log                  import MyLogger
+from scripts.misc.Utils                import ROOT
+
+from scripts.web.driver.nav            import Nav
+from scripts.web.driver.find           import Find
+from scripts.web.driver.read           import Read
+from scripts.web.driver.filter         import Filter
+from scripts.web.driver.input          import Input
+from scripts.web.driver.misc           import Misc
+from scripts.web.driver.select         import Select
+from scripts.web.driver.tabs           import TabControl
+from scripts.web.driver.wait           import Wait
+from scripts.web.driver.click          import Click
+
+from pathlib import Path
+import undetected_chromedriver as uc
+import re
+
+logger = MyLogger("WebDriver")
+
+class WebDriverSession:
+    def __init__(self):
+        self.driver            = None
+        self.default_wait_time = 10
+        self.undetected        = False
+        self._custom_dir       = None
+        self._custom_version   = None
+
+        # ── sub controls ──────────────────────────────────────────────────────
+        self.nav        = None
+        self.find       = None
+        self.click      = None
+        self.wait       = None
+        self.input      = None
+        self.filter     = None
+        self.read       = None
+        self.tabControl = None
+        self.select     = None
+        self.misc       = None
+         
+    def __del__(self):
+        if (self.driver):
+            self.driver.quit()
+
+    def is_alive(self):
+        return True if self.driver else False
+
+    def setUndetected(self, b):
+        self.undetected = b
+        logger.debug("Chromedriver set to undetected mode")
+
+    def set_custom_dir(self, dir: str):
+        p = None
+
+        # ── input checking ────────────────────────────────────────────────────
+        try:
+            p = Path(dir)
+            if not p.exists():
+                raise ValueError() # gets caught by the except
+        except:
+            logger.debug("Failed to convert to Path: {}".format(dir))
+            return 1
+
+        # ── set dir ───────────────────────────────────────────────────────────
+        self._custom_dir = dir
+        logger.debug(f"Successfully set custom chrome path to: {self._custom_dir}")
+        return 0 
+
+    def set_custom_version(self, version):
+        try:
+            version = int(version)
+        except:
+            logger.debug(f"Failed to convert to int: {version}")
+            return 1
+
+        self._custom_version = version
+        return 0
+
+
+    def start(self):
+        """
+        usage:
+            starts webdriver after settings are set
+        returns:
+            error flag (0 = no error)
+        """
+        options = self._build_options()
+
+        if not options:
+            logger.debug("failed to build options for chrome")
+            return 1
+        logger.debug("options built successfully")
+
+        try:
+            if (self._custom_version):
+                logger.debug(f"attempting to open chromedriver with version: {self._custom_version}")
+                self.driver = uc.Chrome(options=options, version_main=self._custom_version)
+            else:
+                logger.debug("custom version not set")
+                self.driver = uc.Chrome(options=options)
+        except SessionNotCreatedException as e:
+            if e.msg:
+                # check for version error
+                if "this version of chromedriver only supports" in e.msg.lower(): 
+                    current_version, expected_version = self.__get_versions_from_error_msg(e.msg)
+                    logger.critical("Chrome outdated.\nYour version: {}\nRequired version: {}".format(current_version, expected_version))
+                else:
+                    logger.debug("WebDriver creation error:\n{}".format(e.msg))
+            else:
+                logger.debug(f"Webdriver failed to start due to error: {e}")
+            return 1
+
+        self.nav        = Nav(self)
+        self.find       = Find(self)
+        self.click      = Click(self)
+        self.wait       = Wait(self)
+        self.input      = Input(self)
+        self.filter     = Filter(self)
+        self.read       = Read(self)
+        self.tabControl = TabControl(self)
+        self.select     = Select(self)
+        self.misc       = Misc(self)
+
+        return 0
+
+    def set_default_wait_time(self, wait_time):
+        self.default_wait_time = wait_time
+        logger.debug(f"default wait time set to {wait_time}")
+
+    def _build_options(self):
+        options = uc.ChromeOptions() if self.undetected else Options()
+        if (options):
+            downloadPath = str((ROOT / 'data' / 'dls').resolve())
+
+            # set options for downloading
+            prefs = {
+                "download.default_directory": downloadPath,
+                "download.prompt_for_download": False,
+                "download.directory_upgrade": True,
+                "safebrowsing.enabled": False,
+                "profile.default_content_setting_values.automatic_downloads": 1,
+                "profile.default_zoom_level_value": 2.0,  # very zoomed in
+            }
+
+            options.add_experimental_option("prefs", prefs)
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+            if (self._custom_dir):
+                options.binary_location = self._custom_dir
+                logger.debug("Custom binary location set to: {}".format(self._custom_dir))
+            else:
+                logger.debug("No custom binary location set")
+        else:
+            logger.critical("Failed to load chrome options")
+            options = None
+
+        return options
+
+    def __get_versions_from_error_msg(self, msg):
+        """
+        returns tuple (current_version, expected_version)
+        """
+
+        current_version  = "0.0.0.0"
+        expected_version = "000"
+
+        current_version_pattern  = r"Current browser version is (\d+\.\d+\.\d+\.\d+);"
+        expected_version_pattern = r"This version of ChromeDriver only supports Chrome version (\d+)\n"
+
+        m = re.search(current_version_pattern, msg)
+        if (m):
+            current_version = m.group(1)
+
+        m = re.search(expected_version_pattern, msg)
+        if (m):
+            expected_version = m.group(1)
+
+        return (current_version, expected_version)

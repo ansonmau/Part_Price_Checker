@@ -22,12 +22,18 @@ logging.basicConfig(
 
 class MyLogger:
     def __init__(self, name):
+        # info
         self.name = name
         self.save_dir = ROOT / "logs" / self.name
+
+        # logger
         self.logger = logging.getLogger(self.name)
+
+        # progress message variables
         self.in_prog = False
         self.m1 = ''
 
+        # ensure can save somewhere
         create_folder(self.save_dir)
 
     @staticmethod
@@ -100,4 +106,6 @@ def is_debug():
 def disable_noisy_libs_logs():
     for noisy_lib in ["urllib3", "selenium", "botocore", "undetected_chromedriver", "uc"]:
         logging.getLogger(noisy_lib).setLevel(logging.WARNING)
+
+
 

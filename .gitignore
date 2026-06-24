@@ -1,6 +1,7 @@
 logs/
 .venv/
 data/auth/
+.mynvim/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

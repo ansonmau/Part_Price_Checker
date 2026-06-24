@@ -1,8 +1,8 @@
 from time import sleep
 from selenium import webdriver
 from scripts.misc.Log import MyLogger, is_debug
-from scripts.web.Driver import WebDriverSession
-from scripts.web.Locator import Locator
+from scripts.web.driver.driver import WebDriverSession
+from scripts.web.driver.locator import Locator
 from scripts.web.Memory import Memory
 import re
 
@@ -12,16 +12,32 @@ class MemoryExpress:
     memory = Memory("ME")
 
     class locators:
-        product_list = Locator('css', '[data-role="product-list-container"]')
-        direct_children = Locator('xpath', './*')
-        price_text_area = Locator('id', 'ProductPricing')
+        product_list    = Locator('css'   , '[data-role="product-list-container"]' , 'product list')
+        direct_children = Locator('xpath' , './*'                                  , 'direct children')
+        price_text_area = Locator('id'    , 'ProductPricing'                       , 'price text area')
 
     def __init__(self):
-        self.driver = WebDriverSession(undetected=True, headless=False)
+        self.driver = None
+
+        self._init_driver()
         self.memory.load_from_file()
 
     def __del__(self):
-        self.driver.endself()
+        del self.driver
+
+    def _init_driver(self):
+        self.driver = WebDriverSession()
+        self.driver.set_custom_version('148')
+        err = self.driver.start()
+        if (err):
+            logger.critical("Webdriver failed to start")
+            return 1
+
+        return 0
+
+    # ╭────────────────────────────────────────────────╮
+    # │                      API                       │
+    # ╰────────────────────────────────────────────────╯
 
     def scrape_price(self, item_id):
         url = "https://www.memoryexpress.com/Search/Products?Search={}".format(item_id)
@@ -30,7 +46,7 @@ class MemoryExpress:
         self.item_id = item_id
         self.m_item_id = self.memory.find(item_id)
 
-        self.driver.get(url)
+        self.driver.nav.get(url)
         sleep(1)
 
         if "Search" in self.driver.read.url():
@@ -57,10 +73,10 @@ class MemoryExpress:
 
             price = results.get(self.m_item_id, -2)
         else:
-            price_area = self.driver.find.by_loc(self.locators.price_text_area)
+            price_area = self.driver.find.element(self.locators.price_text_area)
             if price_area:
                 logger.debug("Price area found")
-                price_txt = self.driver.read.textFromElement(price_area)
+                price_txt = self.driver.read.element_text(price_area)
                 logger.to_file(price_txt, 'price_text')
                 price = self._extract_price(price_txt)
             else:
@@ -71,11 +87,10 @@ class MemoryExpress:
 
     def _get_product_list(self) -> list:
         p_list = []
-        product_list = self.driver.find.by_loc(self.locators.product_list)
-        if product_list:
-            children = self.driver.find.all_from_parent(product_list, self.locators.direct_children)
-            if children:
-                for product_text in [self.driver.read.textFromElement(x) for x in children]:
+        if (product_list := self.driver.find.element(self.locators.product_list)) is not None:
+            if (children := self.driver.find.all_in_parent(product_list, self.locators.direct_children)) is not None:
+                for product_text in [self.driver.read.element_text(x) for x in children]:
+                    # loop through 
                     if product_text:
                         p_list.append(product_text)
 
